@@ -1,22 +1,30 @@
 /**
  * @Author: Hgh
  * @Date: 2024-03-04 13:46:44
- * @LastEditTime: 2024-03-04 15:33:33
+ * @LastEditTime: 2024-03-26 11:40:52
  * @LastEditors: Hgh
  * @Description:
- */
-import { Card, Button, Checkbox, Form, Input } from "antd"
+*/
+import { Card, Button, Checkbox, Form, Input, message } from "antd"
 import './index.scss'
-
-const onFinish = (values) => {
-    console.log('Success:', values);
-};
-
-const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-};
+import { useStore } from '@/store'
+import { useNavigate } from "react-router-dom"
 
 const Login = () => {
+    const { loginStore } = useStore()
+    const navigate = useNavigate()
+
+
+    const onFinish = (values) => {
+        console.log('Success:', values);
+        loginStore.getToken({
+            mobile: values.mobile,
+            code: values.code,
+        })
+        message.success('登录成功')
+        navigate('/', { replace: true })
+    };
+
     return (
         <>
             <div className="Login">
@@ -26,23 +34,26 @@ const Login = () => {
                         labelCol={{ span: 8 }}
                         wrapperCol={{ span: 16 }}
                         style={{ maxWidth: 600 }}
-                        initialValues={{ remember: true }}
+                        initialValues={{
+                            remember: true,
+                            mobile: '15212345678',
+                            code: '123456'
+                        }}
                         onFinish={onFinish}
-                        onFinishFailed={onFinishFailed}
                         autoComplete="off"
                     >
                         <Form.Item
-                            label="Username"
-                            name="username"
-                            rules={[{ required: true, message: 'Please input your username!' }]}
+                            label="Mobile"
+                            name="mobile"
+                            rules={[{ required: true, message: 'Please input your mobile!' }]}
                         >
                             <Input />
                         </Form.Item>
 
                         <Form.Item
-                            label="Password"
-                            name="password"
-                            rules={[{ required: true, message: 'Please input your password!' }]}
+                            label="Code"
+                            name="code"
+                            rules={[{ required: true, message: 'Please input your code!' }]}
                         >
                             <Input.Password />
                         </Form.Item>
