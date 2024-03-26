@@ -17,7 +17,7 @@ const Login = () => {
 
     const onFinish = (values) => {
         console.log('Success:', values);
-        loginStore.getToken({
+        loginStore.getLogin({
             mobile: values.mobile,
             code: values.code,
         })
